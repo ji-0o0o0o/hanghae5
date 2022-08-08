@@ -1,6 +1,7 @@
 package com.sparta.hanghae5.model;
 
 
+import com.sparta.hanghae5.dto.UsersRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ public class Users {
     //FK 임의적으로 사용하니까
     @Id
     @Column( nullable = false, unique = true)
-    private String username;
+    private String usersname;
 
 
     @Column(nullable = false)
@@ -24,7 +25,7 @@ public class Users {
 
     // 한명의 유저가 여러개의 포스트,댓글, 대댓글을 달 수 있으니까
     @OneToMany
-    private List<Post> postList;
+    private List<Article> articleList;
 
     @OneToMany
     private List<Comment> commentList;
@@ -32,4 +33,8 @@ public class Users {
     @OneToMany
     private List<Commit> commitList;
 
+    public Users(UsersRequestDto requestDto) {
+        this.usersname = requestDto.getUsersname();
+        this.password = requestDto.getPassword();
+    }
 }

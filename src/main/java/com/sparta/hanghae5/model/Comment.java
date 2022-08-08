@@ -29,8 +29,8 @@ public class Comment {
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name = "POST_ID",nullable = false)
-    private Post post;
+    @JoinColumn(name = "ARTICLE_ID",nullable = false)
+    private Article article;
 
     @OneToMany
     private List<Commit> commitList;
