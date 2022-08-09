@@ -1,7 +1,9 @@
 package com.sparta.hanghae5.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sparta.hanghae5.dto.UsersRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,7 @@ import java.util.List;
 public class Users {
 
 
-    //FK 임의적으로 사용하니까
+    //pK 임의적으로 사용하니까
     @Id
     @Column( nullable = false, unique = true)
     private String usersname;
@@ -25,16 +27,29 @@ public class Users {
 
     // 한명의 유저가 여러개의 포스트,댓글, 대댓글을 달 수 있으니까
     @OneToMany
+    @JsonManagedReference
     private List<Article> articleList;
 
     @OneToMany
+    @JsonManagedReference
     private List<Comment> commentList;
 
     @OneToMany
+    @JsonManagedReference
     private List<Commit> commitList;
 
+    @Builder
     public Users(UsersRequestDto requestDto) {
         this.usersname = requestDto.getUsersname();
         this.password = requestDto.getPassword();
+    }
+
+
+    public void addArticle(Article article) { //articleList에 article넣어준다.
+    this.articleList.add(article);
+    }
+
+    public void removeArticle(Article article) { //articleList에 지워준다.
+        this.articleList.remove(article);
     }
 }
