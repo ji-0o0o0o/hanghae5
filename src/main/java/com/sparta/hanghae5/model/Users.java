@@ -26,15 +26,15 @@ public class Users {
     private String password;
 
     // 한명의 유저가 여러개의 포스트,댓글, 대댓글을 달 수 있으니까
-    @OneToMany
+    @OneToMany(mappedBy = "users")//유저쪽에만 해줌, 양방향 매핑 -> join테이블 안만들어줌, 다른 아티클간의 변화 감지한다.나중에
     @JsonManagedReference
     private List<Article> articleList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "users")
     @JsonManagedReference
     private List<Comment> commentList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "users")
     @JsonManagedReference
     private List<Commit> commitList;
 
@@ -51,5 +51,19 @@ public class Users {
 
     public void removeArticle(Article article) { //articleList에 지워준다.
         this.articleList.remove(article);
+    }
+
+    public void addComment(Comment comment) { this.commentList.add(comment);
+    }
+
+    public void removeComment(Comment comment) { //articleList에 지워준다.
+        this.commentList.remove(comment);
+    }
+
+    public void addCommit(Commit commit) { this.commitList.add(commit);
+    }
+
+    public void removeCommit(Commit commit) { //articleList에 지워준다.
+        this.commitList.remove(commit);
     }
 }

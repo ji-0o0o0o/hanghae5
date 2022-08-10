@@ -1,5 +1,7 @@
 package com.sparta.hanghae5.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sparta.hanghae5.dto.CommitRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,11 +26,29 @@ public class Commit {
     private int likes;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "USERS_ID",nullable = false)
     private Users users;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "COMMENT_ID",nullable = false)
     private Comment comment;
+
+    public Commit(CommitRequestDto commitRequestDto, Users users, Comment comment) {
+        this.userWriter = commitRequestDto.getUserWriter();
+        this.content = commitRequestDto.getContent();
+        this.likes = commitRequestDto.getLikes();
+        this.users = users;
+        this.comment = comment;
+
+    }
+
+
+    public void update(CommitRequestDto commentRequestDto) {
+
+        this.content = commentRequestDto.getContent();
+    }
+
 
 }

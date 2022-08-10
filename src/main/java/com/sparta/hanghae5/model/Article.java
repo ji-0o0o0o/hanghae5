@@ -38,17 +38,17 @@ public class Article {
     private Users users;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)// 부모가 변할때 같이 변한다.remove, refresh 등 all은 이거다
     @JsonManagedReference
     private List<Comment> commentList;
 
     //  @Builder -> 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함, 이걸 꼭 써야할까?
-    // requestdto 쓰는 이유는?-> response에 필요한  데이터 다 넘겨준다?
+    // requestdto 쓰는 이유는 데이터를 레포지토리에 넣어주기위한 목적
     // dto에서 article의 title, userWriter, content가져오고 user에서 username가져와야함
-    // 여기에 유저정보 넣는건가..?유저네임이 아니라 다?
+    // 여기에 유저정보 넣는거
     public Article(ArticleRequestDto articleRequestDto, Users users) {
         this.title = articleRequestDto.getTitle();
-        this.userWriter = articleRequestDto.getUserWriter();
+        this.userWriter = users.getUsersname();
         this.content = articleRequestDto.getContent();
         this.likes = articleRequestDto.getLikes();
         this.users = users;
@@ -61,5 +61,12 @@ public class Article {
         this.userWriter = articleRequestDto.getUserWriter();
         this.content = articleRequestDto.getContent();
         this.likes = articleRequestDto.getLikes();
+    }
+    public void addComment(Comment comment) { //articleList에 article넣어준다.
+        this.commentList.add(comment);
+    }
+
+    public void removeComment(Comment comment) { //articleList에 지워준다.
+        this.commentList.remove(comment);
     }
 }
